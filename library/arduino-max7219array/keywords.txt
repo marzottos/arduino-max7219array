@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map For Max7219array
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+max7218array	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+setClkPin	KEYWORD2
+setDinPin	KEYWORD2
+addModule	KEYWORD2
+writeByte	KEYWORD2
+write	KEYWORD2
+initModule	KEYWORD2
+setBrightness	KEYWORD2
+shutdown	KEYWORD2
+resume	KEYWORD2
+plot	KEYWORD2
+plotline	KEYWORD2
+plotletter	KEYWORD2
+plotletterat	KEYWORD2
+plotstring	KEYWORD2
+rotateleft	KEYWORD2
+rotateright	KEYWORD2
+shiftleft	KEYWORD2
+shiftright	KEYWORD2
+clear	KEYWORD2
+invert	KEYWORD2
+flush	KEYWORD2
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+
