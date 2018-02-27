@@ -26,7 +26,7 @@
 
 // Include the library and the 4px font
 
-   #include "max7219array.h";
+   #include "max7219array.h"
    #include "max7219_font_4px.h"
 
 
