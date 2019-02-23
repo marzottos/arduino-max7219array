@@ -28,7 +28,7 @@
 
 #include "Arduino.h"
 
-byte max7219array::font[100][6] = {
+const byte max7219array::font[255][6] PROGMEM = {
   {5,0,0,0,0,0},           // ' '   32
   {2,95,15},               // '!'
   {0,0,0,0,0,0},    // '"'

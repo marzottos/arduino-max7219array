@@ -59,7 +59,7 @@ class max7219array
     void plotline(int x1,int y1, int x2, int y2,int color);
     void plotletter(char letter);
     void plotletterat(int x, char letter);
-    void plotstring(char string[]);
+    void plotstring(const char string[]);
     
     void rotateleft();
     void rotateright();
@@ -72,7 +72,7 @@ class max7219array
     void flush();
     
   private:
-    static byte font[100][6];
+    const static byte font[255][6] PROGMEM;
 
 };
 #endif

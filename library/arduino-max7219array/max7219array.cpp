@@ -26,9 +26,7 @@
 #include "Arduino.h"
 #include "max7219array.h"
 
-/**
-* Constructor: initialize required properties
-*/
+
 max7219array::max7219array()
 {
     currentClkPin = 0;
@@ -42,30 +40,18 @@ max7219array::max7219array()
 
 }
 
-/**
- * Set the pin used to clock the max7219 controllers
- * @param clkPin byte The pin used to clock the controllers
- */
 void max7219array::setClkPin(byte clkPin)
 {
   currentClkPin = clkPin;
   pinMode(clkPin,OUTPUT);
 }
 
-/**
- * Set the pin used to send data to the max7219 controllers
- * @param dinPin byte The pin used to send data
- */
 void max7219array::setDinPin(byte dinPin)
 {
   currentDinPin = dinPin;
   pinMode(dinPin,OUTPUT);
 }
 
-/**
- * Add a module to the array of max7219 controllers
- * @param moduleCsPin byte The pin used to latch the data of this controller
- */
 void max7219array::addModule(byte moduleCsPin)
 {
   pinMode(moduleCsPin,OUTPUT);
@@ -75,12 +61,6 @@ void max7219array::addModule(byte moduleCsPin)
   modulesCount++;
 }
 
-/**
- * Send a byte of data to controllers
- * @param
- * @param
- * @todo: remove module param that is no longer used
- */
 void max7219array::writeByte(byte module, byte data) 
 {   
   for(byte i=0;i<8;i++)
@@ -92,9 +72,6 @@ void max7219array::writeByte(byte module, byte data)
   }
 }
 
-/**
- *
- */
 void max7219array::write(byte module, byte address, byte data)
 {
         digitalWrite(modulesCS[module],LOW);
@@ -103,9 +80,6 @@ void max7219array::write(byte module, byte address, byte data)
         digitalWrite(modulesCS[module],HIGH);
 }
 
-/**
- *
- */
 void max7219array::initModule(byte module)
 {
   /*
@@ -136,36 +110,24 @@ void max7219array::initModule(byte module)
  write(module, 0x08, 0x00);       // digit 7 -> last column
 }
 
-/**
- *
- */
 void max7219array::setBrightness(byte brightness)
 {
 	for(byte module=0;module<modulesCount;module++)
 		write(module, 0x0a, brightness);
 }
 
-/**
- *
- */
 void max7219array::shutdown()
 {
 	for(byte module=0;module<modulesCount;module++)
 		write(module, 0x0c, 0x00);
 }
 
-/**
- *
- */
 void max7219array::resume()
 {
 	for(byte module=0;module<modulesCount;module++)
 		write(module, 0x0c, 0x01);
 }
 
-/**
- *
- */
 void max7219array::test(byte seconds)
 {
 	for(byte module=0;module<modulesCount;module++)
@@ -178,9 +140,6 @@ void max7219array::test(byte seconds)
 }
 
 
-/**
- *
- */
 void max7219array::plot(byte x,byte y, byte color=1)
 {
   if(color==1)
@@ -190,9 +149,6 @@ void max7219array::plot(byte x,byte y, byte color=1)
     matrix[x]=matrix[x]&(0xff-(1<<y));
 }
 
-/**
- *
- */
 void max7219array::plotline(int x1,int y1, int x2, int y2,int color=1)
 {
   int x,y;
@@ -250,36 +206,27 @@ void max7219array::plotline(int x1,int y1, int x2, int y2,int color=1)
   }
 }
 
-/**
- *
- */
 void max7219array::plotletter(char letter)
 {
-  int letterLen = font[letter-32][0];
+  int letterLen = pgm_read_byte(&font[letter-32][0]);
   
   for(int p=1;p<=letterLen;p++)
   {
-    matrix[p] = font[letter-32][p];
+    matrix[p] = pgm_read_byte(&font[letter-32][p]);
   }
 }
 
-/**
- *
- */
 void max7219array::plotletterat(int x, char letter)
 {
-  int letterLen = font[letter-32][0];
-  
+  int letterLen = pgm_read_byte(&font[letter-32][0]);
+
   for(int p=0;p<letterLen;p++)
   {
-    matrix[p+x] = font[letter-32][p+1];
+    matrix[p+x] = pgm_read_byte(&font[letter-32][p+1]);
   }
 }
 
-/**
- *
- */
-void max7219array::plotstring(char string[])
+void max7219array::plotstring(const char string[])
 {
   int letter=0;
   int pos=0;
@@ -287,15 +234,12 @@ void max7219array::plotstring(char string[])
   while(string[letter]!=0)
   {
     plotletterat(pos,string[letter]);
-    pos+=font[string[letter]-32][0];
+    pos+=pgm_read_byte(&font[string[letter]-32][0]);
     pos+=1;
     letter++;
   }
 }
 
-/**
- *
- */
 void max7219array::rotateleft()
 {
   byte first;
@@ -308,9 +252,6 @@ void max7219array::rotateleft()
   matrix[(8*modulesCount)-1]=first;
 }
 
-/**
- *
- */
 void max7219array::rotateright()
 {
   byte last;
@@ -323,9 +264,6 @@ void max7219array::rotateright()
   matrix[0]=last;
 }
 
-/**
- *
- */
 void max7219array::shiftleft()
 {
   for(int i=0; i<(8*modulesCount)-1; i++)
@@ -335,9 +273,6 @@ void max7219array::shiftleft()
   matrix[(8*modulesCount)-1]=0;
 }
 
-/**
- *
- */
 void max7219array::shiftright()
 {
   for(int i=(8*modulesCount)-1; i>0; i--)
@@ -347,18 +282,12 @@ void max7219array::shiftright()
   matrix[0]=0;
 }
 
-/**
- *
- */
 void max7219array::clear()
 {
     for(int i=0;i<64;i++)
       matrix[i]=0;
 }
 
-/**
- *
- */
 void max7219array::invert()
 {
   for(int i=0; i<8*modulesCount; i++)
@@ -367,9 +296,6 @@ void max7219array::invert()
   }
 }
 
-/**
- *
- */
 void max7219array::flush()
 {
   byte module;
